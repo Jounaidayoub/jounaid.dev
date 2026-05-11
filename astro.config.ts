@@ -11,19 +11,16 @@ import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
 import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
 import remarkTOC from './src/plugins/remark-toc.mjs'
 import { themeConfig } from './src/config'
-import { imageConfig } from './src/utils/image-config'
 import path from 'path'
-import netlify from '@astrojs/netlify'
+import cloudflare from '@astrojs/cloudflare'
 
 export default defineConfig({
-  adapter: netlify(), // Set adapter for deployment, or set `linkCard` to `false` in `src/config.ts`
+  adapter: cloudflare({
+    imageService: 'cloudflare-binding',
+    prerenderEnvironment: 'node'
+  }),
+  output: 'static',
   site: themeConfig.site.website,
-  image: {
-    service: {
-      entrypoint: 'astro/assets/services/sharp',
-      config: imageConfig
-    }
-  },
   markdown: {
     shikiConfig: {
       theme: 'css-variables',
