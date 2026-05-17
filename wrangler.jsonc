@@ -1,15 +1,18 @@
 {
+  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "astro-chiri",
-  "main": "@astrojs/cloudflare/entrypoints/server",
+  // "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2025-05-11",
   "compatibility_flags": [
     "nodejs_compat"
   ],
   "assets": {
     "binding": "ASSETS",
-    "directory": "./dist/client"
+    "directory": "./dist/client",
+    "not_found_handling": "404-page"
   },
   "observability": {
     "enabled": true
-  }
+  },
+  "route": "jounaid.dev"
 }
