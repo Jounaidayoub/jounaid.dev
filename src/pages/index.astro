@@ -6,8 +6,6 @@ import PostList from '@/components/widgets/PostList.astro'
 import { themeConfig } from '@/config'
 import { getSortedFilteredPosts } from '@/utils/draft'
 
-
-
 const posts = await getSortedFilteredPosts()
 ---
 
@@ -17,6 +15,4 @@ const posts = await getSortedFilteredPosts()
     <FeaturedProjects />
     <PostList posts={posts} />
   </main>
-
 </IndexLayout>
-

@@ -6,7 +6,7 @@ export const themeConfig: ThemeConfig = {
     website: 'https://ayooub.me/', // Site domain
     title: 'Ayooub', // Site title
     author: 'Ayooub', // Author name
-    description: 'Ayooub\'s minimal portfolio & blog', // Site description
+    description: "Ayooub's minimal portfolio & blog", // Site description
     language: 'en-US' // Default language
   },
 

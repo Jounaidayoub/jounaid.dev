@@ -15,8 +15,6 @@ const fadeAnimation = themeConfig.general.fadeAnimation
 const widthValue = Math.min(parseFloat(contentWidth), 90)
 const shouldUseCustomWidth = widthValue > 25
 const finalWidth = shouldUseCustomWidth ? `${widthValue}rem` : '25rem'
-
-
 ---
 
 <html lang={language}>
@@ -71,14 +69,11 @@ const finalWidth = shouldUseCustomWidth ? `${widthValue}rem` : '25rem'
   }
 </style>
 
-
-
-
 <script is:inline>
-    // change the theme when press D
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'd') {
-        window.ThemeManager.toggle()
-      }
-    })
+  // change the theme when press D
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'd') {
+      window.ThemeManager.toggle()
+    }
+  })
 </script>

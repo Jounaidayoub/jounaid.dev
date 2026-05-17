@@ -24,12 +24,16 @@ const featuredProjects = [
     <a href="/projects" class="view-all">View all &rarr;</a>
   </div>
   <ul class="project-list">
-    {featuredProjects.map((project) => (
-      <li class="project-item">
-        <a href="/projects" class="project-link">{project.title}</a>
-        <p class="project-desc">{project.description}</p>
-      </li>
-    ))}
+    {
+      featuredProjects.map((project) => (
+        <li class="project-item">
+          <a href="/projects" class="project-link">
+            {project.title}
+          </a>
+          <p class="project-desc">{project.description}</p>
+        </li>
+      ))
+    }
   </ul>
 </section>
 

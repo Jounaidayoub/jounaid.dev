@@ -3,9 +3,7 @@
   "name": "jounaid",
   // "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2025-05-11",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist/client",
