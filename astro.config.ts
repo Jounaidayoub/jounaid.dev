@@ -16,7 +16,7 @@ import cloudflare from '@astrojs/cloudflare'
 
 export default defineConfig({
   adapter: cloudflare({
-    imageService: 'cloudflare-binding',
+    imageService: process.env.NODE_ENV === 'development' ? 'passthrough' : 'cloudflare-binding',
     prerenderEnvironment: 'node'
   }),
   output: 'static',
