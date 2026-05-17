@@ -1,0 +1,128 @@
+---
+import IndexLayout from '@/layouts/IndexLayout.astro'
+import ProjectCard from '@/components/ui/ProjectCard.astro'
+import { themeConfig } from '@/config'
+
+const projectData = [
+  {
+    title: 'BrowserPilot',
+    description:
+      'An AI agent that lives in your browser sidepanel to automate browsing tasks — navigate, summarize, fill forms, and handle repetitive tasks.',
+    codeLink: 'https://github.com/jounaidayoub/browserpilot'
+  },
+  {
+    title: 'OpenCode Whisper',
+    description:
+      'A voice-to-prompt TUI plugin for OpenCode that transcribes speech into prompts using Groq Whisper API.',
+    codeLink: 'https://github.com/jounaidayoub/opencode-whisper'
+  },
+  {
+    title: 'DoTunnel',
+    description:
+      'A lightweight HTTP tunnel proxy built on Cloudflare Durable Objects. It allows you to expose your local development server to the internet with a secure, public URL.',
+    video: 'videos/dotunnel.mp4',
+    codeLink: 'https://github.com/jounaidayoub/dotunnel',
+    demoLink: 'https://www.npmjs.com/package/dotunnel'
+  },
+  {
+    title: 'URL Shortener',
+    description:
+      'A URL shortener that allows users to shorten long URLs into short links. it does run on Edge using Cloudflare Workers.',
+    video: 'videos/urlshortner.mp4',
+    codeLink: 'https://github.com/jounaidayoub/bit',
+    demoLink: 'https://short.ayooub.me/'
+  },
+  {
+    title: 'Patient Management System',
+    description: 'A demo application built for a healthcare company to manage patients and appointments efficiently.',
+    video: 'videos/health-calendar.mp4',
+    codeLink: 'https://github.com/jounaidayoub/ng-calendar',
+    demoLink: 'http://pratisoft-demo.ayooub.me/'
+  },
+  {
+    title: 'Real-Time Data Processing System',
+    description:
+      'A high-performance system for processing and analyzing high-throughput data in real time from diverse sources.',
+    image: ['images/finance/image.png', 'images/finance/image1.png'],
+    codeLink: 'https://github.com/jounaidayoub/finance'
+  },
+  {
+    title: 'Football Manager',
+    description: 'A platform to create and manage local football tournaments, teams, and players.',
+    image: ['images/screens/search.png'],
+    codeLink: 'https://github.com/jounaidayoub/foot_match_track'
+  },
+  {
+    title: 'Portfolio Website',
+    description: 'A personal portfolio website to showcase my projects and skills.',
+    image: ['images/portfolio/portfolio-screenshot.png'],
+    codeLink: 'https://github.com/jounaidayoub/ayooub.me',
+    demoLink: 'https://ayooub.me/'
+  },
+  {
+    title: 'Recipe App',
+    description: 'A recipe app that allows users to search for recipes, save their favorites, filter by tags.',
+    image: ['images/recipes/homepage.png'],
+    codeLink: 'https://github.com/jounaidayoub/recipes'
+  },
+]
+---
+
+<IndexLayout
+  title={`Projects | ${themeConfig.site.title}`}
+  description="A collection of my recent projects and experiments."
+>
+  <main class="projects-page">
+    <header class="projects-header">
+      <h1 class="page-title">Projects</h1>
+      <p class="page-desc">Here are some of the projects I have worked on recently. Clean, calm, and performant.</p>
+    </header>
+
+    <div class="projects-grid">
+      {projectData.map((project) => <ProjectCard {...project} />)}
+    </div>
+  </main>
+</IndexLayout>
+
+<style>
+  .projects-page {
+    animation: fade-in 0.6s ease-out forwards;
+    padding-bottom: 4rem;
+  }
+  .projects-header {
+    margin-bottom: 3rem;
+  }
+  .page-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+  .page-desc {
+    color: var(--text-secondary);
+    font-size: var(--font-size-m);
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>

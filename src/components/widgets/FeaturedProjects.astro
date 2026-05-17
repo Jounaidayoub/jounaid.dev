@@ -1,0 +1,90 @@
+---
+const featuredProjects = [
+  {
+    title: 'DoTunnel',
+    description:
+      'Expose your localhost to the internet easily. A lightweight tunnel proxy built on Cloudflare Durable Objects.'
+  },
+  {
+    title: 'BrowserPilot',
+    description:
+      'An AI agent that lives in your browser sidepanel to automate browsing tasks — navigate, summarize, fill forms, and handle repetitive tasks.'
+  },
+  {
+    title: 'OpenCode Whisper',
+    description:
+      'A voice-to-prompt TUI plugin for OpenCode that transcribes speech into prompts using Groq Whisper API.'
+  }
+]
+---
+
+<section class="featured-projects">
+  <div class="section-header">
+    <h2 class="section-title">Selected Projects</h2>
+    <a href="/projects" class="view-all">View all &rarr;</a>
+  </div>
+  <ul class="project-list">
+    {featuredProjects.map((project) => (
+      <li class="project-item">
+        <a href="/projects" class="project-link">{project.title}</a>
+        <p class="project-desc">{project.description}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .featured-projects {
+    margin: 2.5rem 0;
+  }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.25rem;
+  }
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  .view-all {
+    color: var(--text-secondary);
+    font-size: var(--font-size-s);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .view-all:hover {
+    color: var(--text-primary);
+  }
+  .project-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .project-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .project-link {
+    font-size: var(--font-size-m);
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .project-link:hover {
+    color: var(--text-secondary);
+  }
+  .project-desc {
+    font-size: var(--font-size-s);
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+  }
+</style>
