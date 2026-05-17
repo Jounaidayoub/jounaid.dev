@@ -54,13 +54,16 @@
 .prose a {
   color: var(--text-primary);
   text-decoration: underline;
-  text-decoration-color: var(--text-tertiary);
-  transition: text-decoration-color 0.2s ease-out;
+  text-decoration-color: var(--primary);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  font-weight: var(--font-weight-bold);
+  transition: all 0.2s ease-out;
 }
 
 .prose a:hover {
-  color: var(--text-primary);
-  text-decoration-color: var(--text-primary);
+  color: var(--primary);
+  text-decoration-color: var(--primary);
 }
 
 /* Paragraphs */

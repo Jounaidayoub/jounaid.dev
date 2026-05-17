@@ -30,6 +30,8 @@
   --selection: rgba(0, 0, 0, 0.08);
   --code-bg: rgba(0, 0, 0, 0.04);
   --mark: #f3ffc4;
+  --primary: #facc15;
+  --primary-hover: #eab308;
 
   /* Syntax Theme  */
   --astro-code-foreground: rgba(0, 0, 0, 0.85);
@@ -55,6 +57,8 @@ html.light {
   --selection: rgba(0, 0, 0, 0.08);
   --code-bg: rgba(0, 0, 0, 0.04);
   --mark: #f3ffc4;
+  --primary: #facc15;
+  --primary-hover: #eab308;
 
   /* Syntax Theme  */
   --astro-code-foreground: rgba(0, 0, 0, 0.85);
@@ -80,6 +84,8 @@ html.dark {
   --selection: rgba(255, 255, 255, 0.08);
   --code-bg: rgba(255, 255, 255, 0.04);
   --mark: #545b37;
+  --primary: #fde047;
+  --primary-hover: #fef08a;
 
   /* Syntax Theme  */
   --astro-code-foreground: rgba(255, 255, 255, 0.9);

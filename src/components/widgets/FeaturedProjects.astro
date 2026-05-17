@@ -38,8 +38,16 @@ const featuredProjects = [
 </section>
 
 <style>
+
+  @media (max-width: 640px) {
+    .featured-projects {
+    margin: 0rem 0;
+  }
+  }
+
+
   .featured-projects {
-    margin: 2.5rem 0;
+    margin: 2rem 0;
   }
   .section-header {
     display: flex;
@@ -60,7 +68,7 @@ const featuredProjects = [
     transition: color 0.2s ease;
   }
   .view-all:hover {
-    color: var(--text-primary);
+    color: var(--primary);
   }
   .project-list {
     list-style: none;
@@ -83,7 +91,7 @@ const featuredProjects = [
     transition: color 0.2s ease;
   }
   .project-link:hover {
-    color: var(--text-secondary);
+    color: var(--primary);
   }
   .project-desc {
     font-size: var(--font-size-s);
