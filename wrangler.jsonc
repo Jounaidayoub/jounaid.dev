@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "astro-chiri",
+  "name": "jounaid.dev",
   // "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2025-05-11",
   "compatibility_flags": [
