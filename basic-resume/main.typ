@@ -12,7 +12,7 @@
   personal-site: d.personal.personal-site,
   accent-color: "#26428b",
   font: "New Computer Modern",
-  paper: "us-letter",
+  paper: "a4",
   author-position: left,
   personal-info-position: left,
 )
