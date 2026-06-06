@@ -46,6 +46,12 @@ jobs:
           node-version: 'lts/*'
           cache: 'pnpm'
 
+      - name: Install typst
+        run: |
+          curl -fsSL https://github.com/typst/typst/releases/latest/download/typst-x86_64-unknown-linux-musl.tar.xz | tar -xJ
+          sudo mv typst-x86_64-unknown-linux-musl/typst /usr/local/bin/
+          rm -rf typst-x86_64-unknown-linux-musl
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --prefer-offline
 

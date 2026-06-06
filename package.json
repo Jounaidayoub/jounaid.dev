@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "pnpm exec tsx scripts/toggle-proxy.ts",
+    "prebuild": "pnpm exec tsx scripts/toggle-proxy.ts && pnpm run resume",
+    "resume": "typst compile basic-resume/main.typ public/resume.pdf",
     "build": "pnpm run typecheck  && astro build",
     "typecheck": "pnpm run typecheck:ts && astro check",
     "typecheck:ts": "tsc --noEmit",
@@ -16,6 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "new": "tsx scripts/new-post.ts",
+    "transcribe": "tsx scripts/transcribe.ts",
     "update-theme": "tsx scripts/update-theme.ts"
   },
   "dependencies": {
@@ -56,5 +58,12 @@
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "workerd"
+    ]
   }
 }
