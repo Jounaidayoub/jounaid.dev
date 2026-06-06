@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "pnpm exec tsx scripts/toggle-proxy.ts && pnpm run resume",
+    "prebuild": "pnpm exec tsx scripts/toggle-proxy.ts",
     "resume": "typst compile basic-resume/main.typ public/resume.pdf",
     "build": "pnpm run typecheck  && astro build",
     "typecheck": "pnpm run typecheck:ts && astro check",

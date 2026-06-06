@@ -55,6 +55,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --prefer-offline
 
+      - name: Generate resume PDF
+        run: pnpm run resume
+
       - name: Format check
         run: pnpm format:check
 
