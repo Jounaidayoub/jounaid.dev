@@ -1,0 +1,84 @@
+[personal]
+name = "Jounaid Ayoub"
+location = "Mohammadia, Morocco"
+email = "jounaidayoub1@gmail.com"
+github = "github.com/jounaidayoub"
+linkedin = "linkedin.com/in/jounaidayoub"
+phone = "+212615739392"
+personal-site = "jounaid.dev"
+
+summary = """Software engineering student focused on building practical systems that solve real problems. Built and shipped full-stack applications, AI agents, developer tools, and distributed systems using modern backend and cloud technologies. Interested in understanding how software works under the hood, from system design and infrastructure to developer tooling and automation. Enjoy building scalable products, exploring new technologies, and turning ideas into reliable software that improves workflows and user experiences.
+"""
+
+[[education]]
+institution = "FST Mohammadia"
+location = "Mohammadia, Morocco"
+start = "Sep 2024"
+end = "Present"
+degree = "Ingénierie Logicielle et Intégration des Systèmes Informatiques (ILISI)"
+
+# [[education]]
+# institution = "CPGE Mohammadia"
+# location = "Mohammadia, Morocco"
+# start = "Sep 2022"
+# end = "Jun 2024"
+# degree = "MP (Mathematics and Physics)"
+
+[[work]]
+title = "Software Engineer Intern - Leyton CognitX"
+location = "Mohammadia, Morocco"
+company = "Leyton CognitX"
+start = "Jan 2025"
+end = "Jun 2025"
+bullets = [
+  "Built a *real-time* financial market data processing system for Leyton CognitX, turning high-throughput event streams into searchable analytics and anomaly reports",
+  "Designed a *distributed backend* with Kafka, FastAPI, Redis, Celery, and Elasticsearch to separate ingestion, processing, storage, and reporting into *independently scalable services*",
+  "Improved *operational visibility* by implementing PDF, CSV, and JSON report generation with asynchronous email delivery for business-facing analysis workflows",
+  "*Containerized* the system with Docker and documented the architecture to make deployment, testing, and future handoff easier for the engineering team",
+]
+
+[[projects]]
+name = "DoTunnel"
+url = "npmjs.com/package/dotunnel"
+bullets = [
+  "Created a lightweight *HTTP tunnel proxy* to help developers expose local servers through *secure public URLs* without deployment friction",
+  "Over *3.3k* downloads, used by developers to simplify local dev workflows and share work in progress.",
+  "Provided a simple *CLI interface* for starting tunnels, logs, with custom subdomain and secure HTTPS connections",
+]
+[[projects]]
+name = "BrowserPilot"
+url = "github.com/jounaidayoub/browserpilot"
+bullets = [
+  "Built a *browser AI agent* that helps users automate repetitive browsing tasks such tab-management, summarization, form filling, and  data extraction",
+  "Supports *local LLMs* so all processing can be done on the user machine without any data leaving their browser, ensuring *privacy and security*",
+  
+]
+
+# [[projects]]
+# name = "Football Manager"
+# url = "github.com/jounaidayoub/foot_match_track"
+# bullets = [
+#   "Built a tournament management platform that lets local clubs create, schedule, and track matches, players, and standings in real time",
+#   "Added an admin dashboard for managing tournaments, teams, and player registrations with live result updates and competition organization",
+# ]
+
+[[projects]]
+name = "Neurospark (Freelance)"
+url = "neuro.jounaid.dev"
+bullets = [
+  "Shipped a full-stack cognitive games platform for a team that needed an app to present at education centers during a *national competition*",
+  "Features multiple game variants with *progressive difficulty* and *haptic vibration cues* that adapt to each child's cognitive exercises designed for children with *learning difficulties* to build skills at their own pace",
+  "Set up a *serverless backend* on Cloudflare Workers with Hono + D1, frontend in React/TypeScript with Tailwind , parent/child profiles, Google OAuth, admin panel, bilingual onboarding, and *mobile-first* design",
+]
+
+[[skills]]
+text = "Backend & Distributed Systems:  Hono , FastAPI, Kafka, Redis, Celery, Elasticsearch, REST APIs, asynchronous processing, event-driven architecture"
+
+[[skills]]
+text = "AI & Developer Tools: LLMs , AI sdk ,, RAG, browser automation, agentic workflows, CLI/TUI tooling"
+
+[[skills]]
+text = "Cloud & DevOps: Docker, Cloudflare Developer Platform, Linux, Git, GitHub Actions, CI/CD pipelines, deployment automation"
+
+[[skills]]
+text = "Languages & Frameworks: TypeScript, Python, C/C++, SQL, React, Angular, Nest.js"
