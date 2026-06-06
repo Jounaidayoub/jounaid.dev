@@ -4,7 +4,7 @@ export const themeConfig: ThemeConfig = {
   // SITE INFO ///////////////////////////////////////////////////////////////////////////////////////////
   site: {
     website: 'https://ayooub.me/', // Site domain
-    title: 'Ayooub', // Site title
+    title: 'jounaid.dev', // Site title
     author: 'Ayooub', // Author name
     description: "Ayooub's minimal portfolio & blog", // Site description
     language: 'en-US' // Default language

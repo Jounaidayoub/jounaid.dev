@@ -1,17 +1,15 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "jounaid",
-	// "main": "@astrojs/cloudflare/entrypoints/server",
-	"compatibility_date": "2025-05-11",
-	"compatibility_flags": [
-		"nodejs_compat"
-	],
-	"assets": {
-		"binding": "ASSETS",
-		"directory": "./dist/client",
-	},
-	"observability": {
-		"enabled": true
-	},
-	"route": "jounaid.dev"
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jounaid",
+  // "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2025-05-11",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./dist/client"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "route": "jounaid.dev"
 }
