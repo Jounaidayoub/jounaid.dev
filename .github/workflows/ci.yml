@@ -53,10 +53,7 @@ jobs:
           rm -rf typst-x86_64-unknown-linux-musl
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --prefer-offline --allow-scripts=@astrojs/*,esbuild,sharp,workerd
-
-      # - name: Install dependencies
-      #   run: pnpm install --frozen-lockfile --prefer-offline
+        run: pnpm install --frozen-lockfile --prefer-offline
           
       - name: Format check
         run: pnpm format:check
