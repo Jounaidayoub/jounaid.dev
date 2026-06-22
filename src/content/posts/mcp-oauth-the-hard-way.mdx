@@ -1,0 +1,406 @@
+---
+title: 'MCP OAuth The Hard Way'
+pubDate: '2026-06-22'
+---
+
+In the [previous post](/posts/what-is-an-mcp-server-new), I built an MCP server. Tools, schemas, JSON-RPC, the whole thing. It was smooth. I had done it before, I understood the concept, and it clicked easily.
+
+The server was just another endpoint, `/mcp`, mounted on our existing AI service written in TypeScript. We used the official `@modelcontextprotocol/sdk` package. VS Code connects, discovers the tools, calls them, gets results. Done.
+
+Then I needed to add auth.
+
+Some of those tools operate at an admin level. Deciding on submissions, approving, rejecting. Obviously you cannot just leave that open. So I needed to protect the MCP server with proper authentication.
+
+For some reason I thought this would be quick. I decided to build it in the evening, after I was already done with the work of the day. Just one more thing before sleep.
+
+That was the first mistake. Little did I know how this was going to go.
+
+## My False Confidence
+
+My experience with OAuth before this was: some YouTube videos I watched about it (yes, that famous one), and a few projects where I added that "Login with Google" button. You know the one. You drop in the Google OAuth client, redirect the user, they click "Allow", you get a token, done. Since I successfully implemented those, I thought I understood OAuth. I even used better-auth which abstracts all of that away. It just works, and you learn nothing. Great lib though.
+
+But here is the thing I did not realize: I had only ever been on the **client side** of the equation. I was consuming someone else's OAuth server. Google's server. I never had to think about what happens on the other side. How tokens get issued. How authorization codes work. How PKCE protects the flow. How the discovery endpoints tell everyone where to go.
+
+So I looked it up. MCP follows OAuth 2.1. Looked great on paper. "It is just OAuth." And since I "knew" OAuth, this should be fine. Come on, that is too easy.
+
+It did not click for me concretely what pieces I needed. So I did more research, went back and forth with Gemini to understand the problem and the pieces, and after some surface-level reading I convinced myself I understood the problem well enough.
+
+## The Delegation Spiral
+
+I opened a new OpenCode session and started planning the feature with the agent. Just discussing the ideas and the OAuth stuff that I shallowly understood. In my head this was just implementation details. This should not be an issue. Come on, we got this.
+
+The high-level plan looked reasonable:
+
+- We need an OAuth authorization server. Our existing auth in the PHP backend was session-based, and MCP requires OAuth. Obviously I am not letting the agent implement the protocol from scratch. They love suggesting stuff like that and letting you struggle with hallucinations. So I asked for a ready-made solution and found the League PHP OAuth package to add an OAuth implementation to our PHP API.
+- The MCP server needs to tell clients where to authenticate. So I need `.well-known` endpoints for discovery.
+- The auth server itself needs to advertise its capabilities: endpoints, supported methods, all of that.
+- I need to implement some interfaces to let the library work with our domain (users, permissions).
+
+Sounds good. Ok buddy, build this. I will read more about the auth flow while you work.
+
+Deep down I knew I was not familiar with this. I had never done it. But I kicked off the agent anyway, partly as an experiment to see how it would go, partly because I thought I would understand every bit after it was done and working.
+
+The agent finished. I tried to test it. It did not work at all. Go back again. Still does not work.
+
+I tried to understand what was happening. Which part was failing. Where the issue was. But I could not. I was staring at the agent debugging and throwing JSON-RPC payloads and HTTP redirects and I genuinely did not know what was supposed to happen at each step. I did not know the flow. I did not know where to look. I did not know what "working" looked like.
+
+Whenever I told the agent something, it would go in circles, trying stuff I did not understand. So I kept going. One more prompt and it will work. One more. We are close. I can feel it.
+
+Some steps would work but others would not. I still could not complete the whole flow. And I could not tell which steps mattered because I did not understand the sequence.
+
+It was already 3am. Still prompting. 4am. Still going. Just one more, bro. We got this.
+
+Hit the context limit. Dropped everything and told the agent to summarize all the work and document all the learnings and the stuff that did not work or had issues. Start fresh again and hope.
+
+At 5am or something I hit the OpenCode free rate limit for the first time ever. Nah.
+
+By the way, it was the coolest paywall I have ever seen. I mean it is a TUI and it has this cool effect. {/* put screenshot */}
+
+But it did wake me up. I prompted too much. That is not who I am, building stuff I do not understand. While doing all of this I kept telling myself this was just experimentation and that I needed to understand it better, but the paywall was what actually made me stop and take a step back. I am usually the guy who is obsessed with understanding how stuff works, low-level systems programming and all that. And here I was trying to get my way out with one more prompt bro.
+
+But we are not going to sleep.
+
+What I had left was a bunch of browser tabs I had opened earlier with the official MCP documentation. The ones I had skimmed but never actually read.
+
+So I read them. For real this time. And it just clicked. Crystal clear. A lot of the debug steps I had watched the agent do, the JSON-RPC payloads it was sending, the redirects it was chasing, they started making sense. I kept reading, one section after another, and each one unlocked something new. Things started to connect.
+
+So let me walk you through what I learned. Every step of the OAuth handshake, the way it finally made sense to me after I stopped prompting and started reading.
+
+## The OAuth Parties
+
+First, the cast of characters. OAuth has four roles, and in MCP they map like this:
+
+| OAuth Role               | MCP Equivalent | Example                                  |
+| ------------------------ | -------------- | ---------------------------------------- |
+| **Resource Owner**       | The user       | You, the human                           |
+| **Resource Server**      | MCP Server     | Your server at `api.example.com/mcp`     |
+| **Client**               | MCP Client     | Cursor, Claude Code, VS Code             |
+| **Authorization Server** | Auth Provider  | Your OAuth server, Keycloak, Clerk, etc. |
+
+The goal here is: the MCP client (your IDE, ChatGPT, Claude, or whatever client) needs to obtain tokens to access the MCP server on behalf of the user. The authorization server is the one that issues those tokens after the user says "yes, I allow this." And to get that token, there is a whole dance of redirects.
+
+When I was doing "Login with Google", Google was the authorization server and my app was the client. Now I needed to be the authorization server. Completely different side of the table.
+
+## The Four Phases
+
+The whole OAuth flow in MCP happens in four phases. When I finally understood these, everything else fell into place.
+
+### Phase 1: Discovery
+
+When your MCP client first tries to connect to your server (you give it the URL of the server), it tries to connect but it has no credentials. It does not even know if auth is required, or where to authenticate.
+
+**Step 1: Client connects without auth.**
+
+The client makes its first request, no token, no credentials:
+
+```http
+POST /mcp HTTP/1.1
+Host: api.example.com
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "initialize",
+  "params": { ... }
+}
+```
+
+**Step 2: Server rejects with 401 and a discovery hint.**
+
+Your MCP server does not just say "go away." It tells the client where to find auth info:
+
+```http
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer resource_metadata="https://api.example.com/.well-known/oauth-protected-resource"
+```
+
+That `WWW-Authenticate` header is defined in [RFC 9728](https://www.rfc-editor.org/rfc/rfc9728.html) and points the client to a metadata endpoint. This is the breadcrumb trail. Follow it and you will find your way to authentication. Basically, we guide the client on how to interact with us and our auth system.
+
+**Step 3: Client fetches resource metadata.**
+
+The client follows that URL and gets back a JSON:
+
+```http
+GET /.well-known/oauth-protected-resource HTTP/1.1
+Host: api.example.com
+```
+
+```json
+{
+  "resource": "https://api.example.com",
+  "authorization_servers": ["https://auth.example.com"],
+  "scopes_supported": ["mcp:tools", "mcp:resources"]
+}
+```
+
+This tells the client: "to access this resource, go authenticate at `auth.example.com` first."
+
+**Step 4: Client fetches authorization server metadata.**
+
+Now we know where the auth server lives. But we still need to know more about it: its capabilities, the supported methods, where the endpoints live. We need to guide the client and present them our server's endpoints:
+
+```http
+GET /.well-known/oauth-authorization-server HTTP/1.1
+Host: auth.example.com
+```
+
+```json
+{
+  "issuer": "https://auth.example.com",
+  "authorization_endpoint": "https://auth.example.com/authorize",
+  "token_endpoint": "https://auth.example.com/token",
+  "registration_endpoint": "https://auth.example.com/register",
+  "code_challenge_methods_supported": ["S256"],
+  "grant_types_supported": ["authorization_code", "refresh_token"],
+  "token_endpoint_auth_methods_supported": ["none"]
+}
+```
+
+Now the client knows everything: where to register, where to authorize, where to get tokens, what methods are supported.
+
+**Why two metadata endpoints?**
+
+This confused me at first. Why not just one endpoint that says everything?
+
+Separation of concerns. Your MCP server (the resource) can delegate auth to any provider. Keycloak, Clerk, Auth0, your own thing. The client discovers resource metadata from the MCP server, then discovers auth capabilities from the auth server. If you swap auth providers later, you just change the `authorization_servers` URL. Your MCP server's discovery endpoint barely changes.
+
+This is the kind of design decision that seems like over-engineering until you actually need to swap providers. Then it is brilliant.
+
+### Phase 2: Dynamic Client Registration
+
+Back to that login feature with Google. You go to the Google Console and create a new client ID and secret, right? Because Google will not let anyone register with their server, it needs to know who wants access. If we wanted that for MCP, it would mean any MCP client that needs to connect would have to go somewhere in your dashboard and create a new client and copy the ID and paste it back. A lot of work for both sides.
+
+Instead, we let MCP clients present themselves on the fly using Dynamic Client Registration (DCR). By the way, this is completely optional. MCP clients let you define a client ID and secret if you already have one. But for the sake of better UX, we needed to add this.
+
+Before the client can start the OAuth flow, it needs to introduce itself to the authorization server and get a `client_id`.
+
+Think of this like creating an OAuth app in GitHub's developer settings, except it happens automatically via API. No manual setup required.
+
+This happens once per client installation. After registration, the client stores its `client_id` and reuses it.
+
+**The registration request:**
+
+```http
+POST /register HTTP/1.1
+Host: auth.example.com
+Content-Type: application/json
+
+{
+  "client_name": "Claude",
+  "redirect_uris": [
+    "https://claude.ai/api/mcp/auth_callback"
+  ],
+  "grant_types": ["authorization_code"],
+  "token_endpoint_auth_method": "none"
+}
+```
+
+A few things worth noting:
+
+**`redirect_uris`**: After the user approves access in the browser, where should the auth server redirect them back? The client provides a callback URL to catch the response. For desktop apps this is usually a localhost URL because they spin up a temporary HTTP server on the user's machine. For web-based clients like Claude, it is a proper callback endpoint.
+
+**`token_endpoint_auth_method: "none"`**: This means "I am a public client, I do not have a secret." MCP clients run on user devices. You cannot safely embed secrets there. So they authenticate through PKCE instead (more on that in Phase 3).
+
+**The response:**
+
+```json
+{
+  "client_id": "550e8400-e29b-41d4-a716-446655440000",
+  "client_name": "Claude",
+  "redirect_uris": ["https://claude.ai/api/mcp/auth_callback"],
+  "grant_types": ["authorization_code"],
+  "token_endpoint_auth_method": "none"
+}
+```
+
+The server echoes back the registration details plus a unique `client_id`. The client saves this and uses it in all future auth requests.
+
+### Phase 3: Authorization with PKCE
+
+This is the part the user actually sees. A browser opens, they log in, they click "Allow."
+
+But behind the scenes, there is a crucial security mechanism: **PKCE** (Proof Key for Code Exchange). Since MCP clients are public clients without secrets, PKCE is the thing that prevents someone from intercepting the authorization code and stealing your tokens.
+
+**Step 1: Client generates PKCE challenge.**
+
+Before opening the browser, the client generates two values:
+
+```
+code_verifier  = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"  (random string)
+code_challenge = base64url(SHA256(code_verifier))
+               = "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
+```
+
+The client keeps `code_verifier` secret and sends `code_challenge` in the authorization request. Think of it like this: the client sends a locked box (the challenge) now, and will prove it has the key (the verifier) later.
+
+**Step 2: Client opens browser to authorization endpoint.**
+
+```
+https://auth.example.com/authorize
+  ?response_type=code
+  &client_id=550e8400-...
+  &redirect_uri=https://claude.ai/api/mcp/auth_callback
+  &code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
+  &code_challenge_method=S256
+  &state=xyz123
+```
+
+The `state` parameter is a random value to prevent CSRF attacks. The client generates it, sends it with the request, and checks that it comes back unchanged in the callback.
+
+**Step 3: User authenticates and approves.**
+
+The auth server:
+
+1. Shows a login page if the user is not already signed in
+2. Shows a consent screen: "Claude wants to access your MCP tools. Allow?"
+3. Stores the `code_challenge` associated with this `client_id` (crucial for the next phase)
+
+**Step 4: Server redirects back with an authorization code.**
+
+After the user clicks "Allow", the server generates a short-lived authorization code and redirects:
+
+```http
+HTTP/1.1 302 Found
+Location: https://claude.ai/api/mcp/auth_callback?code=SplxlOBeZQQYbYS6WxSbIA&state=xyz123
+```
+
+The client catches this redirect, verifies the `state` matches, and extracts the `code`.
+
+This code is useless to an attacker who might intercept it because they do not have the `code_verifier`. That is the whole point of PKCE.
+
+### Phase 4: Token Exchange
+
+The final step. All of that dance just for this: to get the damn token that lets us in. The client trades the authorization code for an actual access token.
+
+This happens directly between the client and the auth server. No browser involved.
+
+**The token request:**
+
+```http
+POST /token HTTP/1.1
+Host: auth.example.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code
+&code=SplxlOBeZQQYbYS6WxSbIA
+&code_verifier=dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+&redirect_uri=https://claude.ai/api/mcp/auth_callback
+&client_id=550e8400-...
+```
+
+Notice the `code_verifier`. This is the proof. The auth server takes it, runs `SHA256(code_verifier)`, and checks that the result matches the `code_challenge` that was stored during authorization.
+
+**The server verifies:**
+
+1. **Code is valid**: exists and has not expired (usually a 10-minute window)
+2. **Code is unused**: each code can only be exchanged once
+3. **redirect_uri matches**: must exactly match what was sent in the authorization request
+4. **PKCE verification**: `SHA256(code_verifier) == code_challenge`
+5. **client_id matches**: the code was issued to this specific client
+
+If any check fails, rejected. If all pass, tokens are issued.
+
+**The token response:**
+
+```json
+{
+  "access_token": "eyJhbGciOiJSUzI1NiIs...",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "refresh_token": "def502..."
+}
+```
+
+The client saves the `access_token` and includes it in every subsequent MCP request:
+
+```http
+POST /mcp HTTP/1.1
+Host: api.example.com
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
+Content-Type: application/json
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "decide_submission",
+    "arguments": { "id": "sub_123", "action": "approve" }
+  }
+}
+```
+
+The MCP server validates the token, extracts the user info, and serves the request.
+
+And that is the full dance. Four phases. Discovery, Registration, Authorization, Token Exchange. Dozens of back and forth and redirects and a whole lot of cryptographic handshaking.
+
+## The Full Picture
+
+Here is what the complete flow looks like:
+
+```mermaid
+sequenceDiagram
+    participant Client as MCP Client (IDE)
+    participant MCP as MCP Server
+    participant Auth as Auth Server
+    participant User as User (Browser)
+
+    Note over Client,Auth: Phase 1: Discovery
+    Client->>MCP: POST /mcp (no auth)
+    MCP-->>Client: 401 + WWW-Authenticate header
+    Client->>MCP: GET /.well-known/oauth-protected-resource
+    MCP-->>Client: resource metadata (auth server URL)
+    Client->>Auth: GET /.well-known/oauth-authorization-server
+    Auth-->>Client: auth server metadata (endpoints)
+
+    Note over Client,Auth: Phase 2: Registration
+    Client->>Auth: POST /register (client_name, redirect_uris)
+    Auth-->>Client: client_id
+
+    Note over Client,User: Phase 3: Authorization (PKCE)
+    Client->>Client: Generate code_verifier + code_challenge
+    Client->>User: Open browser to /authorize
+    User->>Auth: Login + consent
+    Auth->>Client: Redirect with authorization code
+
+    Note over Client,Auth: Phase 4: Token Exchange
+    Client->>Auth: POST /token (code + code_verifier)
+    Auth->>Auth: Verify PKCE
+    Auth-->>Client: access_token + refresh_token
+
+    Note over Client,MCP: Authenticated Access
+    Client->>MCP: POST /mcp + Authorization: Bearer token
+    MCP-->>Client: Tool results
+```
+
+## What I Learned
+
+What I learned was not that I suddenly became an OAuth expert. Not even close. But I understood the sequence enough to know where to look when something goes wrong. Before that, every error was just "it does not work", and the agent was trying stuff while I was watching it try stuff.
+
+The lesson is not "AI agents are bad at OAuth." The lesson is: **you cannot effectively direct or debug work that you do not understand yourself.**
+
+This is true for everything I have debugged, not just MCP. Whether it is web, systems, backend, whatever. The more you understand the thing, the platform, the layers, the better debugger/Owner you are. You know where to look. You know where things could possibly go wrong. You may know what right looks like, but to debug it you need the low-level knowledge of the thing.
+
+AI is a tool. It pays off when two things are true:
+
+- you understand the tool itself and how to use it,
+- and you understand the domain you are operating the tool in.
+
+Some people try to let go of the latter, thinking the AI will fill the gap. I still believe that will never work, and domain knowledge will only become more valuable. I get so much value from AI in domains where I have expertise/knowlege. You can still get away with it for trivial tasks without domain knowledge, but it will reach a point where it becomes the most painful thing you have ever worked on. You cannot direct stuff you do not understand.
+
+> Seniors are getting away with these tools , they are in good spot rn , while they left us here fighting just to get an internship :'(
+
+Understanding first, then build. Or at least: understand alongside building. But never after. By then you are just burning tokens and time.
+
+{/* TODO: Add bonus section about the debugging tool I discovered that helped trace the full OAuth redirect chain step by step. This was a game-changer for seeing exactly which phase was failing and what each party was sending/receiving. */}
+
+## Sources
+
+- [MCP Authorization Specification](https://modelcontextprotocol.io/specification/draft/basic/authorization)
+- [MCP Authorization Tutorial](https://modelcontextprotocol.io/docs/tutorials/security/authorization)
+- [OAuth 2.1 Draft Spec](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-13)
+- [RFC 9728 - OAuth 2.0 Protected Resource Metadata](https://datatracker.ietf.org/doc/html/rfc9728)
+- [RFC 8414 - OAuth 2.0 Authorization Server Metadata](https://datatracker.ietf.org/doc/html/rfc8414)
+- [RFC 7591 - OAuth 2.0 Dynamic Client Registration](https://datatracker.ietf.org/doc/html/rfc7591)
+- [Upstash: Implementing MCP OAuth](https://upstash.com/blog/mcp-oauth-implementation) good read !!

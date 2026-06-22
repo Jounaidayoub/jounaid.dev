@@ -69,6 +69,7 @@
       applyTheme(theme) {
         document.documentElement.classList.remove('light', 'dark')
         document.documentElement.classList.add(theme)
+        document.documentElement.setAttribute('data-theme', theme)
 
         // Dispatch event for other components
         document.dispatchEvent(
