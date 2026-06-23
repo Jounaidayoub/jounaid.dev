@@ -7,8 +7,21 @@ linkedin = "linkedin.com/in/jounaidayoub"
 phone = "+212615739392"
 personal-site = "jounaid.dev"
 
-summary = """Software engineering student focused on building practical systems that solve real problems. Built and shipped full-stack applications, AI agents, developer tools, and distributed systems using modern backend and cloud technologies. Constantly learning how things work and trying to understand the problem space and figuring out how to design better, more maintainable software systems. Enjoy building scalable products, exploring new technologies, and turning ideas into reliable software that improves workflows and the life of the people around me.
+summary = """Software engineering student focused on building practical, maintainable software across backend systems, AI agents, developer tools, and full-stack products. Created open-source developer tools downloaded 3.4k+ times on npm and shipped full-stack applications for real-world clients. Interested in distributed systems, cloud platforms, and building reliable products that improve real workflows.
 """
+
+[theme]
+accent-color = "#26428b"
+font = "New Computer Modern"
+paper = "a4"
+lang = "en"
+
+[labels]
+summary = "Summary"
+education = "Education"
+work = "Work Experience"
+projects = "Projects"
+skills = "Skills"
 
 [[education]]
 institution = "FST Mohammadia , Cycle Ingénieur"

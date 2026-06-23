@@ -1,6 +1,9 @@
 #import "vendor/resume.typ": *
 
-#let d = toml("data.toml")
+#let data-file = sys.inputs.at("data", default: "data.toml")
+#let d = toml(data-file)
+#let theme = d.at("theme", default: (:))
+#let labels = d.at("labels", default: (:))
 
 #show: resume.with(
   author: d.personal.name,
@@ -10,18 +13,19 @@
   linkedin: d.personal.linkedin,
   phone: d.personal.phone,
   personal-site: d.personal.personal-site,
-  accent-color: "#26428b",
-  font: "New Computer Modern",
-  paper: "a4",
+  accent-color: theme.at("accent-color", default: "#26428b"),
+  font: theme.at("font", default: "New Computer Modern"),
+  paper: theme.at("paper", default: "a4"),
+  lang: theme.at("lang", default: "en"),
   author-position: left,
   personal-info-position: left,
 )
 
-== Summary
+== #labels.at("summary", default: "Summary")
 
 #d.personal.summary
 
-== Education
+== #labels.at("education", default: "Education")
 
 #for e in d.education [
   #edu(
@@ -32,7 +36,7 @@
   )
 ]
 
-== Work Experience
+== #labels.at("work", default: "Work Experience")
 
 #for w in d.work [
   #work(
@@ -46,7 +50,7 @@
   ]
 ]
 
-== Projects
+== #labels.at("projects", default: "Projects")
 
 #for p in d.projects [
   #project(
@@ -59,7 +63,7 @@
   ]
 ]
 
-== Skills
+== #labels.at("skills", default: "Skills")
 
 #for s in d.skills [
   - #s.at("text", default: "")

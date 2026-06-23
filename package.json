@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "astro dev",
     "prebuild": "pnpm exec tsx scripts/toggle-proxy.ts",
-    "resume": "typst compile basic-resume/main.typ public/resume.pdf",
+    "resume": "pnpm run resume:en && pnpm run resume:fr",
+    "resume:en": "typst compile --input data=data.toml basic-resume/main.typ public/resume.pdf",
+    "resume:fr": "typst compile --input data=data-fr.toml basic-resume/main.typ public/resume-fr.pdf",
     "build": "pnpm run typecheck  && astro build",
     "typecheck": "pnpm run typecheck:ts && astro check",
     "typecheck:ts": "tsc --noEmit",

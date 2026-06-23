@@ -1,0 +1,82 @@
+[personal]
+name = "Jounaid Ayoub"
+location = "Mohammadia, Maroc"
+email = "jounaidayoub1@gmail.com"
+github = "github.com/jounaidayoub"
+linkedin = "linkedin.com/in/jounaidayoub"
+phone = "+212615739392"
+personal-site = "jounaid.dev"
+
+summary = """Étudiant en ingénierie logicielle, spécialisé dans la conception de logiciels pratiques et maintenables: systèmes backend, agents IA, outils développeur et applications full-stack. J'ai créé des outils open source pour développeurs téléchargés plus de 3,4k fois sur npm et livré des applications full-stack pour des clients réels. Intéressé par les systèmes distribués, les plateformes cloud et la construction de produits fiables qui améliorent des workflows concrets.
+"""
+
+[theme]
+accent-color = "#26428b"
+font = "New Computer Modern"
+paper = "a4"
+lang = "fr"
+
+[labels]
+summary = "Profil"
+education = "Formation"
+work = "Expérience Professionnelle"
+projects = "Projets"
+skills = "Compétences"
+
+[[education]]
+institution = "FST Mohammadia, Cycle Ingénieur"
+location = "Mohammadia, Maroc"
+start = "Sep 2024"
+end = "Présent"
+degree = "Ingénierie Logicielle et Intégration des Systèmes Informatiques (ILISI)"
+
+[[work]]
+title = "Stagiaire Ingénieur Logiciel - Leyton CognitX"
+location = "Casablanca, Maroc"
+company = "Leyton CognitX"
+start = "Jan 2025"
+end = "Jun 2025"
+bullets = [
+  "Conception d'un système de traitement de données de marché financier en *temps réel* pour Leyton CognitX, transformant des flux d'événements à haut débit en analytics consultables et rapports d'anomalies",
+  "Architecture d'un *backend distribué* avec Kafka, FastAPI, Redis, Celery et Elasticsearch pour séparer ingestion, traitement, stockage et reporting en *services scalables indépendamment*",
+  "Amélioration de la *visibilité opérationnelle* avec génération de rapports PDF, CSV et JSON et envoi d'emails asynchrones pour les workflows d'analyse métier",
+  "*Conteneurisation* du système avec Docker et documentation de l'architecture pour faciliter le déploiement, les tests et le transfert à l'équipe engineering",
+]
+
+[[projects]]
+name = "DoTunnel"
+url = "npmjs.com/package/dotunnel"
+bullets = [
+  "Création d'un *proxy de tunnel HTTP* léger permettant aux développeurs d'exposer des serveurs locaux via des *URLs publiques sécurisées* sans friction de déploiement",
+  "Plus de *3,4k* téléchargements sur npm, utilisé pour simplifier les workflows de développement local et partager du travail en cours",
+  "Interface *CLI* simple pour démarrer des tunnels, consulter les logs, utiliser des sous-domaines personnalisés et des connexions HTTPS sécurisées",
+]
+
+[[projects]]
+name = "BrowserPilot"
+url = "github.com/jounaidayoub/browserpilot"
+bullets = [
+  "Développement d'un *agent IA pour navigateur* aidant les utilisateurs à automatiser des tâches répétitives comme la gestion d'onglets, la synthèse, le remplissage de formulaires et l'extraction de données",
+  "Support des *LLMs locaux* pour exécuter le traitement sur la machine de l'utilisateur sans sortie de données du navigateur, assurant *confidentialité et sécurité*",
+]
+
+[[projects]]
+name = "Neurospark (Freelance)"
+url = "neuro.jounaid.dev"
+bullets = [
+  "Livraison d'une plateforme full-stack de jeux cognitifs pour une équipe qui devait présenter une application dans des centres éducatifs lors d'une *compétition nationale*",
+  "Fonctionnalités de jeux multiples avec *difficulté progressive* et *retours haptiques* adaptés aux exercices cognitifs d'enfants ayant des *difficultés d'apprentissage*",
+  "Mise en place d'un *backend serverless* sur Cloudflare Workers avec Hono + D1, frontend React/TypeScript avec Tailwind, profils parent/enfant, Google OAuth, panneau admin, onboarding bilingue et design *mobile-first*",
+]
+
+[[skills]]
+text = "Backend & Systèmes Distribués: Hono, FastAPI, Kafka, Redis, Celery, Elasticsearch, APIs REST, traitement asynchrone, architecture événementielle"
+
+[[skills]]
+text = "IA & Outils Développeur: LLMs, AI SDK, RAG, automatisation navigateur, workflows agentiques, outils CLI/TUI"
+
+[[skills]]
+text = "Cloud & DevOps: Docker & Docker Compose, Cloudflare Developer Platform, Linux, Git, GitHub Actions, pipelines CI/CD, automatisation de déploiement"
+
+[[skills]]
+text = "Langages & Frameworks: TypeScript, Python, C/C++, SQL, React, Angular, Nest.js"
