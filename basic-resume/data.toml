@@ -11,7 +11,7 @@ summary = """Software engineering student focused on building practical systems 
 """
 
 [[education]]
-institution = "FST Mohammadia"
+institution = "FST Mohammadia , Cycle Ingénieur"
 location = "Mohammadia, Morocco"
 start = "Sep 2024"
 end = "Present"
@@ -26,7 +26,7 @@ degree = "Ingénierie Logicielle et Intégration des Systèmes Informatiques (IL
 
 [[work]]
 title = "Software Engineer Intern - Leyton CognitX"
-location = "Mohammadia, Morocco"
+location = "Casablanca, Morocco"
 company = "Leyton CognitX"
 start = "Jan 2025"
 end = "Jun 2025"
@@ -78,7 +78,7 @@ text = "Backend & Distributed Systems:  Hono , FastAPI, Kafka, Redis, Celery, El
 text = "AI & Developer Tools: LLMs , AI sdk ,, RAG, browser automation, agentic workflows, CLI/TUI tooling"
 
 [[skills]]
-text = "Cloud & DevOps: Docker, Cloudflare Developer Platform, Linux, Git, GitHub Actions, CI/CD pipelines, deployment automation"
+text = "Cloud & DevOps: Docker & Docker compose , Cloudflare Developer Platform, Linux, Git, GitHub Actions, CI/CD pipelines, deployment automation"
 
 [[skills]]
 text = "Languages & Frameworks: TypeScript, Python, C/C++, SQL, React, Angular, Nest.js"
