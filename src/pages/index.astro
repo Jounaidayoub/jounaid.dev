@@ -13,6 +13,39 @@ const posts = await getSortedFilteredPosts()
   <About />
   <main>
     <FeaturedProjects />
-    <PostList posts={posts} />
+    <section class="blog-section">
+      <div class="section-header">
+        <h2 class="section-title">Blog</h2>
+        <a href="/blog" class="view-all">View all &rarr;</a>
+      </div>
+      <PostList posts={posts} />
+    </section>
   </main>
 </IndexLayout>
+
+<style>
+  .blog-section {
+    margin: 2rem 0;
+  }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.25rem;
+  }
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  .view-all {
+    color: var(--text-secondary);
+    font-size: var(--font-size-s);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .view-all:hover {
+    color: var(--primary);
+  }
+</style>

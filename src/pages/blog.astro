@@ -1,0 +1,172 @@
+---
+import IndexLayout from '@/layouts/IndexLayout.astro'
+import FormattedDate from '@/components/widgets/FormattedDate.astro'
+import { themeConfig } from '@/config'
+import { getSortedFilteredPosts } from '@/utils/draft'
+
+const posts = await getSortedFilteredPosts()
+---
+
+<IndexLayout
+  title={`Blog | ${themeConfig.site.title}`}
+  description="Writing about software engineering, AI agents, developer tools, and things I learn along the way."
+>
+  <main class="blog-page">
+    <header class="blog-header">
+      <h1 class="page-title">Blog</h1>
+      <p class="page-desc">
+        Writing about software engineering, AI agents, developer tools, and things I learn along the way.
+      </p>
+    </header>
+
+    <ul class="post-list">
+      {
+        posts.map((post) => (
+          <li>
+            <a href={`/${post.id}/`}>
+              <div class={`post-item ${!themeConfig.date.dateOnRight ? 'date-left' : ''}`}>
+                {!themeConfig.date.dateOnRight && (
+                  <p class="date font-features">
+                    <FormattedDate date={post.data.pubDate} context="list" />
+                  </p>
+                )}
+                <p class="title">{post.data.title}</p>
+                {themeConfig.date.dateOnRight && (
+                  <div class={themeConfig.general.postListDottedDivider ? 'dotted-divider' : 'divider'} />
+                )}
+                {themeConfig.date.dateOnRight && (
+                  <p class="date font-features">
+                    <FormattedDate date={post.data.pubDate} context="list" />
+                  </p>
+                )}
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</IndexLayout>
+
+<style>
+  .blog-page {
+    animation: fade-in 0.6s ease-out forwards;
+    padding-bottom: 4rem;
+  }
+  .blog-header {
+    margin-bottom: 3rem;
+  }
+  .page-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+  .page-desc {
+    color: var(--text-secondary);
+    font-size: var(--font-size-m);
+  }
+  .post-list {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  a {
+    color: var(--text-primary);
+    display: block;
+    text-decoration: none;
+    transition: opacity 0.15s ease-out;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .post-list:hover a {
+      opacity: 0.4;
+    }
+    .post-list:hover a:hover {
+      opacity: 1;
+      color: var(--primary);
+    }
+    .post-list:hover a:hover .divider {
+      background-color: var(--text-tertiary);
+      opacity: 0.75;
+    }
+    .post-list:hover a:hover .dotted-divider {
+      color: var(--text-secondary);
+    }
+    .post-list:hover a:hover .date {
+      color: var(--text-secondary);
+      opacity: 1;
+    }
+  }
+  .post-item {
+    height: 2.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .post-item.date-left {
+    justify-content: flex-start;
+  }
+  .post-item.date-left .title {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .post-item.date-left .date {
+    margin-right: 0.75rem;
+  }
+  .title {
+    margin: 0;
+    flex-shrink: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .date {
+    margin: 0;
+    color: var(--text-secondary);
+    opacity: 0.75;
+    letter-spacing: var(--spacing-s);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .divider {
+    flex: 1 1 auto;
+    min-width: 3rem;
+    margin: 0 0.25rem;
+    height: 0.5px;
+    background-color: var(--border);
+  }
+  .dotted-divider {
+    flex: 1 1 3rem;
+    min-width: 3rem;
+    max-width: 100%;
+    text-align: end;
+    letter-spacing: 5px;
+    height: 1.675rem;
+    overflow: hidden;
+    color: var(--text-tertiary);
+    opacity: 0.75;
+  }
+  .dotted-divider::after {
+    content: '·····························································································································································';
+    pointer-events: none;
+  }
+  .placeholder {
+    height: 3rem;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
