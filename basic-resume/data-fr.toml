@@ -34,7 +34,7 @@ degree = "Ingénierie Logicielle et Intégration des Systèmes Informatiques (IL
 title = "Stagiaire Ingénieur Logiciel - Leyton CognitX"
 location = "Casablanca, Maroc"
 company = "Leyton CognitX"
-start = "Jan 2025"
+start = "Avr 2025"
 end = "Jun 2025"
 bullets = [
   "Conception d'un système de traitement de données de marché financier en *temps réel* pour Leyton CognitX, transformant des flux d'événements à haut débit en analytics consultables et rapports d'anomalies",

@@ -41,7 +41,7 @@ degree = "Ingénierie Logicielle et Intégration des Systèmes Informatiques (IL
 title = "Software Engineer Intern - Leyton CognitX"
 location = "Casablanca, Morocco"
 company = "Leyton CognitX"
-start = "Jan 2025"
+start = "Apr 2025"
 end = "Jun 2025"
 bullets = [
   "Built a *real-time* financial market data processing system for Leyton CognitX, turning high-throughput event streams into searchable analytics and anomaly reports",
@@ -64,7 +64,7 @@ url = "github.com/jounaidayoub/browserpilot"
 bullets = [
   "Built a *browser AI agent* that helps users automate repetitive browsing tasks such tab-management, summarization, form filling, and  data extraction",
   "Supports *local LLMs* so all processing can be done on the user machine without any data leaving their browser, ensuring *privacy and security*",
-  
+
 ]
 
 # [[projects]]
