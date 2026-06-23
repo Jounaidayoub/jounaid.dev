@@ -1,6 +1,7 @@
 ---
 title: 'About'
 ---
+
 Hi, I'm **Ayoub**. I'm a software engineering student building developer tools, AI agents, backend systems, and full-stack applications.
 
 I like practical software: tools that improve workflows, systems that stay reliable, and products that people can actually use. I've created open-source developer tools downloaded thousands of times on npm and shipped full-stack applications for real-world users/clients.
