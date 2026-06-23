@@ -3,16 +3,16 @@ import type { ThemeConfig } from './types'
 export const themeConfig: ThemeConfig = {
   // SITE INFO ///////////////////////////////////////////////////////////////////////////////////////////
   site: {
-    website: 'https://ayooub.me/', // Site domain
+    website: 'https://jounaid.dev/', // Site domain
     title: 'jounaid.dev', // Site title
-    author: 'Ayooub', // Author name
-    description: "Ayooub's minimal portfolio & blog", // Site description
+    author: 'Ayoub', // Author name
+    description: "Ayoub Jounaid's personal website", // Site description
     language: 'en-US' // Default language
   },
 
   // GENERAL SETTINGS ////////////////////////////////////////////////////////////////////////////////////
   general: {
-    contentWidth: '40rem', // Content area width
+    contentWidth: '50rem', // Content area width
     centeredLayout: true, // Use centered layout (false for left-aligned)
     themeToggle: true, // Show theme toggle button (uses system theme by default)
     postListDottedDivider: true, // Show dotted divider in post list

@@ -1,11 +1,10 @@
 ---
 title: 'About'
 ---
+Hi, I'm **Ayoub**. I'm a software engineering student building developer tools, AI agents, backend systems, and full-stack applications.
 
-Hey iam ayoub a builder/tinkter
+I like practical software: tools that improve workflows, systems that stay reliable, and products that people can actually use. I've created open-source developer tools downloaded thousands of times on npm and shipped full-stack applications for real-world users/clients.
 
-Hi, I'm **Ayoub**. I build _clean_ and _performant_ web applications.
+This is my _minimal_ and _calm_ space on the internet. You can explore my [Projects](/projects), read my blog below, view my code on [GitHub](https://github.com/jounaidayoub), or download my resume: [EN](/resume.pdf) / [FR](/resume-fr.pdf).
 
-This is my _minimal_ and _calm_ space on the internet. You can find some of my recent [Projects](/projects) here, or check out my thoughts below. View my code on [GitHub](https://github.com/jounaidayoub) or access my [Resume](/resume.pdf).
-
-You can find me on [LinkedIn](https://www.linkedin.com/in/jounaidayoub/) and [Twitter](https://twitter.com/jounaidayoub) or email me at hey@jounaid.dev
+For freelance work, contact me at [work@jounaid.dev](mailto:work@jounaid.dev). Otherwise, find me on [LinkedIn](https://www.linkedin.com/in/jounaidayoub/) or email [hey@jounaid.dev](mailto:hey@jounaid.dev).
