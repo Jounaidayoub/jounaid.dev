@@ -63,7 +63,7 @@
     "prettier-plugin-astro": "^0.14.1",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.2",
+    "typescript-eslint": "^8.62.1",
     "wrangler": "^4.90.0"
   }
 }
